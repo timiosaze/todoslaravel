@@ -11,12 +11,11 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/todos', function () {
-    return view('todos.index');
-});
-Route::get('/todos/edit', function () {
-    return view('todos.edit');
-});
+Route::get('/todos', 'TodoController@index')->name('todos.index');
+Route::post('/todos', 'TodoController@store')->name('todos.store');
+Route::get('/todos/{id}/change', 'TodoController@changeStatus')->name('todos.change');
+Route::delete('/todos/{id}', 'TodoController@destroy')->name('todos.destroy');

@@ -5,9 +5,5 @@ $(document).ready(function(){
 		$notaction.slideUp();
 		$action.slideToggle();
 	});
-	$('.done').click(function(){
-		$this = $(this).parents('.actions').prev();
-		$this.toggleClass('text-through');
-		$(this).text($(this).text() == 'Done' ? 'Undone' : 'Done');
-	});
+	
 });
