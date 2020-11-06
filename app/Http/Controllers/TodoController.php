@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Todo;
+use Auth;
 use Illuminate\Http\Request;
 
 class TodoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +20,7 @@ class TodoController extends Controller
     public function index()
     {
         //
-        $todos = Todo::orderBy('updated_at', 'desc')->get();
+        $todos = Todo::where('user_id', Auth::id())->orderBy('status', 'asc')->paginate(7);
 
         return view('todos.index',compact("todos"));
     }
@@ -45,19 +50,24 @@ class TodoController extends Controller
         ]);
         $todo = new Todo();
         $todo->the_todo = request('the_todo');
+        $todo->user_id = Auth::id();
 
         if($todo->save()){
-            return redirect('/todos');
+            return redirect('/todos')->with('success', 'Successfully saved');
+        } else {
+            return redirect('/todos')->with('failure', 'Not saved');
         }
     }
 
     public function changeStatus($id)
     {
-        $todo = Todo::findOrFail($id);
+        $todo = Todo::where('user_id', Auth::id())->findOrFail($id);
 
         $todo->status = ($todo->status == 0) ? 1 : 0;
         if($todo->save()){
-            return redirect('/todos');
+            return redirect('/todos')->with('success', 'Successfully updated');
+        } else {
+            return redirect('/todos')->with('failure', 'Not updated');
         }
     }
     /**
@@ -103,10 +113,12 @@ class TodoController extends Controller
     public function destroy($id)
     {
         //
-        $todo = Todo::findOrFail($id);
+        $todo = Todo::where('user_id', Auth::id())->findOrFail($id);
 
         if($todo->delete()){
-            return redirect('/todos');
+            return redirect('/todos')->with('success', 'Successfully deleted');
+        } else {
+            return redirect('/todos')->with('failure', 'Not deleted');
         }
     }
 }

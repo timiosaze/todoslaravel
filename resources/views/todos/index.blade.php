@@ -4,11 +4,13 @@
 	
 		<section class="section">
 			<div class="create-form">
+				@include('inc.validation')
+				@include('inc.session')
 				<h3>New Todo</h3>
 				<form action="{{route('todos.store')}}" method="POST">
 					@csrf
 					<div class="form-group">
-						<textarea name="the_todo" id="" cols="20" rows="3" class="form-control" placeholder="Todo"></textarea>
+						<textarea name="the_todo" id="" cols="20" rows="3" class="form-control" placeholder="Todo" required></textarea>
 					</div>
 					<button class="btn-primary btn float-right">Create</button>
 					<div class="clearfix"></div>
@@ -76,10 +78,7 @@
 			</div>
 		</section>
 		<section class="section">
-			<div class="paginate">
-				<a href="#" class="btn btn-outline-primary">Prev</a>
-				<a href="#" class="btn btn-outline-primary">Next</a>
-			</div>
+			{{$todos->links()}}
 		</section>
 
 @endsection

@@ -13,9 +13,12 @@
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 Route::get('/todos', 'TodoController@index')->name('todos.index');
 Route::post('/todos', 'TodoController@store')->name('todos.store');
 Route::get('/todos/{id}/change', 'TodoController@changeStatus')->name('todos.change');
 Route::delete('/todos/{id}', 'TodoController@destroy')->name('todos.destroy');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
